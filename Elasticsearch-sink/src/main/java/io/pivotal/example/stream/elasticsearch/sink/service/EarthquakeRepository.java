@@ -1,10 +1,8 @@
 package io.pivotal.example.stream.elasticsearch.sink.service;
 
-import java.util.List;
-
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-public interface EarthquakeRepository extends ElasticsearchRepository<Earthquake, String> {
+public interface EarthquakeRepository  extends ElasticsearchRepository<Earthquake, String> {
 
 	/*
 	public Earthquake findByFirstName(String firstName);

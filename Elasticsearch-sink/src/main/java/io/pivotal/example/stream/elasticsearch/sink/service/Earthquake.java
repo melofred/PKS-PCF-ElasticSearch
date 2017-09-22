@@ -2,15 +2,11 @@ package io.pivotal.example.stream.elasticsearch.sink.service;
 
 import java.util.Date;
 
-import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName = "ncedc-earthquakes", type = "earthquake", shards = 1, replicas = 0, refreshInterval = "-1")
+@Document(indexName = "earthquakes", type = "earthquake", shards = 1, replicas = 0, refreshInterval = "-1")
 public class Earthquake {
-	
-	@Id
-	private String eventId;
 	
 	private Date timestamp;
 
@@ -21,7 +17,9 @@ public class Earthquake {
 	private Float depth;
 
 	private Float magnitude;
-
+	
+	private String magType;
+	
 	private Integer NBStations;
 	
 	private Float gap;
@@ -31,6 +29,11 @@ public class Earthquake {
 	private Float RMS;
 	
 	private String source;
+	
+	@Id
+	private String eventId;
+	
+
 
 	public String getEventId() {
 		return eventId;
@@ -38,6 +41,14 @@ public class Earthquake {
 
 	public void setEventId(String eventId) {
 		this.eventId = eventId;
+	}
+
+	public String getMagType() {
+		return magType;
+	}
+
+	public void setMagType(String magType) {
+		this.magType = magType;
 	}
 
 	public Date getTimestamp() {
