@@ -13,16 +13,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class ElasticsearchPersistenceService {
 
-	@Autowired(required=false)
-	private EarthquakeRepository repository;	
+	//@Autowired(required=false)
+	//private EarthquakeRepository repository;	
 	
-	ObjectMapper mapper = new ObjectMapper();
-	
+	static ObjectMapper mapper = new ObjectMapper();
+	static ElasticSearchClient client = new ElasticSearchClient();
 	
 	private DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SS");
 	
 	public void insert(Earthquake quake) {
-		repository.save(quake);
+		try {
+			client.insert(mapper.writeValueAsString(quake));
+		}
+		catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+		//repository.save(quake);
 		
 	}
 
@@ -33,7 +39,8 @@ public class ElasticsearchPersistenceService {
 		Earthquake quake = new Earthquake();
 		
 		StringTokenizer tokenizer = new StringTokenizer(csv, ",");
-		if (tokenizer.countTokens()!=12) throw new ParseException("Bad formatted record. Missing data.", tokenizer.countTokens());
+		
+		if (tokenizer.countTokens()!=12) throw new ParseException("Bad formatted record. Missing data. Tokens:"+ tokenizer.countTokens(), 0);
 		
 		quake.setTimestamp(formatter.parse(tokenizer.nextToken()));
 		quake.setLatitude(Float.valueOf(tokenizer.nextToken()));

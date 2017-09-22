@@ -2,10 +2,10 @@ package io.pivotal.example.stream.elasticsearch.sink.service;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+//import org.springframework.data.annotation.Id;
+//import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName = "earthquakes", type = "earthquake", shards = 1, replicas = 0, refreshInterval = "-1")
+//@Document(indexName = "earthquakes", type = "earthquake", shards = 1, replicas = 0, refreshInterval = "-1")
 public class Earthquake {
 	
 	private Date timestamp;
@@ -30,7 +30,7 @@ public class Earthquake {
 	
 	private String source;
 	
-	@Id
+//	@Id
 	private String eventId;
 	
 

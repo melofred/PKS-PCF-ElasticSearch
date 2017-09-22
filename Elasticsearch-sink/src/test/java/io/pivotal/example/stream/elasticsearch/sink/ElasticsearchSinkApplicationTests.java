@@ -15,12 +15,15 @@ public class ElasticsearchSinkApplicationTests {
 	@Autowired
 	ElasticsearchPersistenceService svc;
 	
-	
+	/*
+	 *       DateTime,Latitude,Longitude,Depth,Magnitude,MagType,NbStations,Gap,Distance,RMS,Source,EventID
+	 */
+
 	@Test
 	public void contextLoads() {
 		
 		try {
-			svc.insert(svc.parse("2016/01/01 03:16:57.64,-25.3790,-179.4803,415.30,4.10,Mb,,71,8,1.03,us,201601012009"));
+			svc.insert(svc.parse("2016/01/01 03:16:57.64,-25.3790,-179.4803,415.30,4.10,Mb,5,71,8,1.03,us,201601012009"));
 		}
 		catch(Exception e) {
 			throw new RuntimeException(e);
