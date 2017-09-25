@@ -1,5 +1,7 @@
 package io.pivotal.example.stream.elasticsearch.sink.service;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,7 +21,8 @@ public class ElasticsearchPersistenceService {
 	static ObjectMapper mapper = new ObjectMapper();
 	static ElasticSearchClient client = new ElasticSearchClient();
 	
-	private DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SS");
+	private DateFormat formatterIn = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SS");
+	private DateFormat formatterOut = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS");
 	
 	public void insert(Earthquake quake) {
 		try {
@@ -42,9 +45,16 @@ public class ElasticsearchPersistenceService {
 		
 		if (tokenizer.countTokens()!=12) throw new ParseException("Bad formatted record. Missing data. Tokens:"+ tokenizer.countTokens(), 0);
 		
-		quake.setTimestamp(formatter.parse(tokenizer.nextToken()));
-		quake.setLatitude(Float.valueOf(tokenizer.nextToken()));
-		quake.setLongitude(Float.valueOf(tokenizer.nextToken()));
+		// "post_date" : "2009-11-15T14:12:12",
+		//quake.setTimestamp(formatter.parse(tokenizer.nextToken()));
+		quake.setTimestamp(formatterOut.format(formatterIn.parse(tokenizer.nextToken())));
+		//quake.setLatitude(Float.valueOf(tokenizer.nextToken()));
+		//quake.setLongitude(Float.valueOf(tokenizer.nextToken()));
+		
+		Float latitude=Float.valueOf(tokenizer.nextToken());
+		Float longitude=Float.valueOf(tokenizer.nextToken());
+		quake.setLocation(latitude+", "+longitude);
+		
 		quake.setDepth(Float.valueOf(tokenizer.nextToken()));
 		quake.setMagnitude(Float.valueOf(tokenizer.nextToken()));
 		quake.setMagType(tokenizer.nextToken());
@@ -57,5 +67,16 @@ public class ElasticsearchPersistenceService {
 		return quake;
 	}
 	
+	public void createEarthquakesIndex() {
+		try {
+			client.createIndex();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }

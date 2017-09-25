@@ -2,35 +2,50 @@ package io.pivotal.example.stream.elasticsearch.sink.service;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 //import org.springframework.data.annotation.Id;
 //import org.springframework.data.elasticsearch.annotations.Document;
 
 //@Document(indexName = "earthquakes", type = "earthquake", shards = 1, replicas = 0, refreshInterval = "-1")
 public class Earthquake {
 	
-	private Date timestamp;
+	@JsonProperty(value="@timestamp")
+	private String timestamp;
 
-	private Float latitude;
+	//private Float latitude;
 	
-	private Float longitude;
+	//private Float longitude;
+	
+	@JsonProperty(value="location")
+	private String location;
 
+	@JsonProperty(value="depth")
 	private Float depth;
 
+	@JsonProperty(value="mag")
 	private Float magnitude;
 	
+	@JsonProperty(value="magType")
 	private String magType;
 	
+	@JsonProperty(value="nst")
 	private Integer NBStations;
 	
+	@JsonProperty(value="gap")
 	private Float gap;
 	
+	@JsonProperty(value="dmin")
 	private Float distance;
 	
+	@JsonProperty(value="rms")
 	private Float RMS;
 	
+	@JsonProperty(value="source")
 	private String source;
 	
 //	@Id
+	@JsonProperty(value="event_id")
 	private String eventId;
 	
 
@@ -51,14 +66,14 @@ public class Earthquake {
 		this.magType = magType;
 	}
 
-	public Date getTimestamp() {
+	public String getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Date timestamp) {
+	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
-
+/*
 	public Float getLatitude() {
 		return latitude;
 	}
@@ -74,7 +89,7 @@ public class Earthquake {
 	public void setLongitude(Float longitude) {
 		this.longitude = longitude;
 	}
-
+*/
 	public Float getDepth() {
 		return depth;
 	}
@@ -129,6 +144,14 @@ public class Earthquake {
 
 	public void setSource(String source) {
 		this.source = source;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	
 	
