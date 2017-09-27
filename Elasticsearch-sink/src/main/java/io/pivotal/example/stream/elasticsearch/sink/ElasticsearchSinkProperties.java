@@ -15,6 +15,7 @@ import static org.springframework.integration.handler.LoggingHandler.Level.INFO;
 public class ElasticsearchSinkProperties {
 
 	private String expression = "payload";
+	private String url="35.196.255.180:9200";
 
 	/**
 	 * The level at which to log messages.
@@ -31,13 +32,21 @@ public class ElasticsearchSinkProperties {
 		this.expression = expression;
 	}
 
+	@NotBlank
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	@NotNull
 	public LoggingHandler.Level getLevel() {
 		return level;
 	}
 
 	public void setLevel(LoggingHandler.Level level) {
-		this.level = level;
+		this.level = level; 
 	}		
 	
 	

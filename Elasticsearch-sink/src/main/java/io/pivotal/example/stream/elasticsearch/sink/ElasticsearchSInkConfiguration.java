@@ -26,13 +26,10 @@ public class ElasticsearchSInkConfiguration {
 	private Logger logger = Logger.getLogger("ElasticSearchSink");
 	
 	@StreamListener(Sink.INPUT)
-	/*
-	public void handle(Earthquake quake) {
-		svc.insert(quake);
-	}
-	*/
-
+	
 	public void onMessage(Message<?> message) {
+		
+		if (!svc.isConfigured()) svc.config(properties.getUrl());
 		
 		String payload = message.getPayload().toString();
 		try {

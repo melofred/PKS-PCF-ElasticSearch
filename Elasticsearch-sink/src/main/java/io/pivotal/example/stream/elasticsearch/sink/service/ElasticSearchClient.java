@@ -9,33 +9,20 @@ import org.apache.http.HttpHost;
 import org.apache.http.entity.StringEntity;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
+
 public class ElasticSearchClient {
 
-    @Value("${elasticsearch.host}")
-    private String esHost;
-
-    @Value("${elasticsearch.port}")
-    private int esPort;
-
-    @Value("${elasticsearch.clustername}")
-    private String EsClusterName;
-	
-	
+ 
 	RestClient client;
 	
 	
-	public ElasticSearchClient() {
+	public ElasticSearchClient(String url) {
 		
-		if (esHost==null) {
-			esHost="35.196.255.180";
-			esPort=9200;
-		}
+		String[] address = url.split(":");
+		
 		client = RestClient
-	            .builder(new HttpHost(esHost, esPort))
+	            .builder(new HttpHost(address[0], Integer.parseInt(address[1])))
 	            .build();
 	            
 	}

@@ -19,10 +19,19 @@ public class ElasticsearchPersistenceService {
 	//private EarthquakeRepository repository;	
 	
 	static ObjectMapper mapper = new ObjectMapper();
-	static ElasticSearchClient client = new ElasticSearchClient();
+	
+	private ElasticSearchClient client;
 	
 	private DateFormat formatterIn = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SS");
 	private DateFormat formatterOut = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS");
+	
+	public boolean isConfigured() {
+		return client!=null;
+	}
+	
+	public void config(String url) {
+		client = new ElasticSearchClient(url);
+	}
 	
 	public void insert(Earthquake quake) {
 		try {
@@ -41,29 +50,46 @@ public class ElasticsearchPersistenceService {
 	public Earthquake parse(String csv) throws ParseException{
 		Earthquake quake = new Earthquake();
 		
-		StringTokenizer tokenizer = new StringTokenizer(csv, ",");
+		//StringTokenizer tokenizer = new StringTokenizer(csv, ",");
 		
-		if (tokenizer.countTokens()!=12) throw new ParseException("Bad formatted record. Missing data. Tokens:"+ tokenizer.countTokens(), 0);
+		String[] tokens = csv.split(",", -1);
+		
+		String timestamp = tokens[0];
+		String latitude = tokens[1];
+		String longitude = tokens[2];
+		String depth = tokens[3];
+		String mag = tokens[4];
+		String magType = tokens[5];
+		String stations = tokens[6];
+		String gap = tokens[7];
+		String dmin = tokens[8];
+		String rms = tokens[9];
+		String source = tokens[10];
+		String eventId = tokens[11];
+		
+		if (timestamp.isEmpty() || latitude.isEmpty() || longitude.isEmpty()) {
+			throw new ParseException("Bad formatted record. Missing data. ",0);
+		}
+		
+		//if (tokenizer.countTokens()!=12) throw new ParseException("Bad formatted record. Missing data. Tokens:"+ tokenizer.countTokens(), 0);
 		
 		// "post_date" : "2009-11-15T14:12:12",
 		//quake.setTimestamp(formatter.parse(tokenizer.nextToken()));
-		quake.setTimestamp(formatterOut.format(formatterIn.parse(tokenizer.nextToken())));
+		quake.setTimestamp(formatterOut.format(formatterIn.parse(timestamp)));
 		//quake.setLatitude(Float.valueOf(tokenizer.nextToken()));
 		//quake.setLongitude(Float.valueOf(tokenizer.nextToken()));
 		
-		Float latitude=Float.valueOf(tokenizer.nextToken());
-		Float longitude=Float.valueOf(tokenizer.nextToken());
 		quake.setLocation(latitude+", "+longitude);
 		
-		quake.setDepth(Float.valueOf(tokenizer.nextToken()));
-		quake.setMagnitude(Float.valueOf(tokenizer.nextToken()));
-		quake.setMagType(tokenizer.nextToken());
-		quake.setNBStations(Integer.valueOf(tokenizer.nextToken()));
-		quake.setGap(Float.valueOf(tokenizer.nextToken()));
-		quake.setDistance(Float.valueOf(tokenizer.nextToken()));
-		quake.setRMS(Float.valueOf(tokenizer.nextToken()));
-		quake.setSource(tokenizer.nextToken());
-		quake.setEventId(tokenizer.nextToken());
+		quake.setDepth(depth.isEmpty()?0:Float.valueOf(depth));
+		quake.setMagnitude(mag.isEmpty()?0:Float.valueOf(mag));
+		quake.setMagType(magType);
+		quake.setNBStations(stations.isEmpty()?0:Integer.valueOf(stations));
+		quake.setGap(gap.isEmpty()?0:Float.valueOf(gap));
+		quake.setDistance(dmin.isEmpty()?0:Float.valueOf(dmin));
+		quake.setRMS(rms.isEmpty()?0:Float.valueOf(rms));
+		quake.setSource(source);
+		quake.setEventId(eventId);
 		return quake;
 	}
 	
