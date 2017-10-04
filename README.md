@@ -32,11 +32,8 @@ $ kubectl expose deployment elastic-kibana --name=elastic-kibana-svc --port=9200
 $ kubectl get services
 [TODO: command output]
 
-Create the index in Elastic Search
 
-[TODO: detailed instructions]
 
-Use curl to post the 
 
 2. Build and publish the Spring Cloud Stream ElasticSearch sink app. 
 
@@ -89,14 +86,10 @@ curl http://localhost:9200/earthquakes/_count
 
 7. Open the Kibana UI and import the dashboard
 
-Open the Kibana UI at http://[Elastic-Kibana-IP]:5601/
+- Open the Kibana UI at http://[Elastic-Kibana-IP]:5601/
+- Click the Management tab >> Index Patterns tab >> Create New. Specify "earthquakes" as the index pattern name and click Create to define the index pattern. (Leave the Use event times to create index names box unchecked and use @timestamp as the Time Field)
+- Click the Management tab >> Saved Objects tab >> Import, and select earthquakes-dashboard.json.
+- Click on Dashboard tab and open the Earthquake dashboard
 
-Click on
+See data being ingested live!
 
-Using a local file:
-
-file --directory=<path>/earthquakes --filename-pattern=earthquakes.txt --mode=lines | bridge | elasticsearch
-
-5. Deploy the pipeline. The data should land in ElasticSearch
-
-6. Open the Kibana UI at <IP>:5601 and import the dashboard at earthquakes/ncedc-earthquakes-dashboards.json
