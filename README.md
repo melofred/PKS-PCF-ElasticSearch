@@ -1,4 +1,24 @@
-# PKS-PCF-Elastic
+# Earthquakes demo with SCDF for PCF and PKS/Kubo
+
+This demo is part of the CF Summit EU 2017 session and shows both PCF Elastic Runtime and PKS being used side-by-side.
+
+## Pre-requisites:
+---
+The demo was tested using the following software versions:
+- Pivotal CloudFoundry(PCF) v1.11
+- Kubo v[CHANGEME]
+- Spring Cloud Dataflow(SCDF) v.1.3.0.M2
+- Docker v.17.06
+- Kubectl client v.1.7.6
+
+The SCDF pipeline uses the following Spring Cloud Stream apps:
+- Http Client, [CHANGEME] - Bacon Release (maven) http://bit.ly/Bacon-RELEASE-stream-applications-rabbit-maven
+- Custom Elastic Search sink app, which can be found in this repository
+
+It also requires a docker registry account, with the ability to push and pull images. Dockerhub (free) will work just fine.
+
+## Runnning the demo
+---
 
 1. Deploy ElasticSearch and Kibana: 
 
