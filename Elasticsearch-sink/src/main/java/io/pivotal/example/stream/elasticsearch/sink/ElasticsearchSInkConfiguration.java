@@ -14,7 +14,7 @@ import io.pivotal.example.stream.elasticsearch.sink.service.ElasticsearchPersist
 
 @EnableBinding(Sink.class)
 @EnableConfigurationProperties(ElasticsearchSinkProperties.class)
-public class ElasticsearchSInkConfiguration {
+public class ElasticsearchSinkConfiguration {
 
 
 	@Autowired
@@ -29,6 +29,9 @@ public class ElasticsearchSInkConfiguration {
 	
 	public void onMessage(Message<?> message) {
 		
+		//ignore header
+		if (message.getPayload().toString().startsWith("DateTime")) return;
+		
 		if (!svc.isConfigured()) svc.config(properties.getUrl());
 		
 		String payload = message.getPayload().toString();
@@ -38,7 +41,9 @@ public class ElasticsearchSInkConfiguration {
 		catch(ParseException pe) {
 			logger.warning("Ignoring line with data missing: "+payload);
 		}
-		 
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		
 	}

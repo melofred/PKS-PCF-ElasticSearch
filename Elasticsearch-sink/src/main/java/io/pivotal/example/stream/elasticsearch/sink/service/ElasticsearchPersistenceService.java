@@ -5,9 +5,8 @@ import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,10 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class ElasticsearchPersistenceService {
 
-	//@Autowired(required=false)
-	//private EarthquakeRepository repository;	
+		
 	
 	static ObjectMapper mapper = new ObjectMapper();
+	
+	private Logger logger = Logger.getLogger("ElasticSearchSink");
 	
 	private ElasticSearchClient client;
 	
@@ -34,13 +34,14 @@ public class ElasticsearchPersistenceService {
 	}
 	
 	public void insert(Earthquake quake) {
+		
 		try {
 			client.insert(mapper.writeValueAsString(quake));
 		}
 		catch(Exception e) {
 			throw new RuntimeException(e);
 		}
-		//repository.save(quake);
+
 		
 	}
 
@@ -50,9 +51,12 @@ public class ElasticsearchPersistenceService {
 	public Earthquake parse(String csv) throws ParseException{
 		Earthquake quake = new Earthquake();
 		
-		//StringTokenizer tokenizer = new StringTokenizer(csv, ",");
 		
 		String[] tokens = csv.split(",", -1);
+		
+		if (tokens.length<12) {
+			throw new ParseException("Ignoring line missing data:" +csv,0);
+		}
 		
 		String timestamp = tokens[0];
 		String latitude = tokens[1];
@@ -71,13 +75,8 @@ public class ElasticsearchPersistenceService {
 			throw new ParseException("Bad formatted record. Missing data. ",0);
 		}
 		
-		//if (tokenizer.countTokens()!=12) throw new ParseException("Bad formatted record. Missing data. Tokens:"+ tokenizer.countTokens(), 0);
-		
-		// "post_date" : "2009-11-15T14:12:12",
-		//quake.setTimestamp(formatter.parse(tokenizer.nextToken()));
 		quake.setTimestamp(formatterOut.format(formatterIn.parse(timestamp)));
-		//quake.setLatitude(Float.valueOf(tokenizer.nextToken()));
-		//quake.setLongitude(Float.valueOf(tokenizer.nextToken()));
+
 		
 		quake.setLocation(latitude+", "+longitude);
 		

@@ -1,5 +1,5 @@
 start kafka:   zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties & kafka-server-start /usr/local/etc/kafka/server.properties &
 start SCDF:  java -jar spring-cloud-dataflow-server-local-1.2.3.RELEASE.jar
-import stream apps from URL:  http://bit.ly/Bacon-RELEASE-stream-applications-kafka-10-maven
+import stream apps from URL: http://bit.ly/Bacon-RELEASE-stream-applications-rabbit-maven
 import app: http://<kubernetes_svc_ip>/Elasticsearch-sink-0.0.1-SNAPSHOT.jar
-
+create the stream:   stream create --name demo --definition "time --fixed-delay=3000 | httpclient --url-expression='''http://repo.pcf.pcf-demo.net/earthquakes.txt''' | splitter --delimiters=\"\\\n\" |elasticsearch" --deploy

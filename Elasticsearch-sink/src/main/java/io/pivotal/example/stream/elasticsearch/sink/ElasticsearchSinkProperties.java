@@ -15,7 +15,7 @@ import static org.springframework.integration.handler.LoggingHandler.Level.INFO;
 public class ElasticsearchSinkProperties {
 
 	private String expression = "payload";
-	private String url="35.196.255.180:9200";
+	private String url="es-kibana.pcf-demo.net:9200";
 
 	/**
 	 * The level at which to log messages.

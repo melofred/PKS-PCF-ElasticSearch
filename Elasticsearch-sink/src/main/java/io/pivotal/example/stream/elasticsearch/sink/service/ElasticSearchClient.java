@@ -21,9 +21,20 @@ public class ElasticSearchClient {
 		
 		String[] address = url.split(":");
 		
-		client = RestClient
-	            .builder(new HttpHost(address[0], Integer.parseInt(address[1])))
-	            .build();
+		while (client==null) {
+			client = RestClient
+		            .builder(new HttpHost(address[0], Integer.parseInt(address[1])))
+		            .build();
+			if (client==null) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+			
+		
 	            
 	}
 	
