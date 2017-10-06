@@ -38,6 +38,8 @@ $ kubectl get services
 [TODO: command output]
 
 
+Create the Index in Elastic Search. See the script ./createIndex.sh and replace it with your ElasticSearch IP/host information.
+
 
 2. Build and publish the Spring Cloud Stream ElasticSearch sink app. 
 
