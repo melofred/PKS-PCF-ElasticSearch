@@ -39,7 +39,6 @@ $ kubectl get services
 
 
 
-
 2. Build and publish the Spring Cloud Stream ElasticSearch sink app. 
 
 $ cd Elasticsearch-sink/
@@ -83,7 +82,7 @@ Replace <version> of the jar file with the correct filename. You can find the fi
 
 Use the UI or SCDF command line to deploy the following pipeline to SCDF:
 
-stream create --name demo --definition "time --fixed-delay=3000 | httpclient --url-expression='''http://[HOST]/earthquakes.txt''' | splitter --delimiters=\"\\\n\" |elasticsearch" --deploy
+stream create --name demo --definition "time --fixed-delay=3000 | httpclient --url-expression='''http://[HOST]/earthquakes.txt''' | splitter --delimiters=\"*\" |elasticsearch" --deploy
 
 Replace [HOST] above with your httpd host from step 2.
 
@@ -96,9 +95,9 @@ TODO: Find a better trigger than 5min timer
 
  You can check the SCDF app logs and verify the number of records directly in Elastic Search:
 
-$ curl http://localhost:9200/earthquakes/_refresh
+$ curl http://[Elastic-Kibana-IP]:9200/earthquakes/_refresh
 
-$ curl http://localhost:9200/earthquakes/_count
+$ curl http://[Elastic-Kibana-IP]:9200/earthquakes/_count
 
 
 7. Open the Kibana UI and import the dashboard
