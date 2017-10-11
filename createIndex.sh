@@ -187,3 +187,5 @@ curl -H "Content-Type: application/json" -X PUT -d '{
 
                 }
 ' http://es-kibana.pcf-demo.net:9200/earthquakes
+
+curl  -H "Content-Type: application/json" -X POST http://es-kibana.pcf-demo.net:9200/earthquakes/earthquake -d '{"@timestamp": "2016/01/01 03:16:57.64", "location": "-25.3790,-179.4803", "depth": "415.30", "mag": "4.10", "magType": "Mb", "nst": 5, "gap": 71, "dmin": "8", "rms": 1.03, "source": "us", "event_id":201601012009}'
