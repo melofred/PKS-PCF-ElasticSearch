@@ -7,13 +7,13 @@ This demo is part of the CF Summit EU 2017 session and shows both PCF Elastic Ru
 ---
 The demo was tested using the following software versions:
 - Pivotal CloudFoundry(PCF) v1.11
-- Kubo v[CHANGEME]
-- Spring Cloud Dataflow(SCDF) v.1.3.0.M2
+- Kubo v0.7
+- Spring Cloud Dataflow(SCDF) for CloudFoundry v.1.2.4
 - Docker v.17.06
 - Kubectl client v.1.7.6
 
 The SCDF pipeline uses the following Spring Cloud Stream apps:
-- Http Client, [CHANGEME] - Bacon Release (maven) [http://bit.ly/Bacon-RELEASE-stream-applications-rabbit-maven]
+- HttpClient processor - Bacon Release (maven) [http://bit.ly/Bacon-RELEASE-stream-applications-rabbit-maven]
 - Custom Elastic Search sink app, which can be found in this repository
 
 It also requires a docker registry account, with the ability to push and pull images. Dockerhub (free) will work just fine.
@@ -36,6 +36,8 @@ $ kubectl expose deployment elastic-kibana --name=elastic-kibana-svc --port=9200
 $ kubectl get services
 
 [TODO: command output]
+
+Alternatively, use the CF ElasticRuntime integrated routing to expose the running container and use that route instead of the external IP.
 
 
 Create the Index in Elastic Search. See the script ./createIndex.sh and replace it with your ElasticSearch IP/host information.
