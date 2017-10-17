@@ -22,7 +22,6 @@ public class ElasticsearchSinkApplicationTests {
 	
 	/*
 	 *       DateTime,Latitude,Longitude,Depth,Magnitude,MagType,NbStations,Gap,Distance,RMS,Source,EventID
-	 */
 
 	@Test
 	public void contextLoads() {
@@ -39,7 +38,7 @@ public class ElasticsearchSinkApplicationTests {
 		}
 		
 	}
-
+*/
 	
 	
 }
