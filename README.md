@@ -18,13 +18,13 @@ The SCDF pipeline uses the following Spring Cloud Stream apps:
 
 It also requires a docker registry account, with the ability to push and pull images. Dockerhub (free) will work just fine.
 
+
 ## Runnning the demo
 ---
 
-1. Deploy ElasticSearch and Kibana. Expose it through a Load Balancer service and note the IP address:
+   1. Deploy ElasticSearch and Kibana. Expose it through a Load Balancer service and note the IP address:
 
    Alternatively, you can use the __deploy-es-kibana.sh__ script
-
 
    $ kubectl run elastic-kibana --image=fredmelo/elasticsearch
 ```
@@ -46,14 +46,25 @@ It also requires a docker registry account, with the ability to push and pull im
    Alternatively, you can use the CF App Runtime integrated routing (using route-sync) to expose the running container and use that route instead of the external IP.
 
 
-2. Create the Index in Elastic Search. See the script ./createIndex.sh and replace it with your ElasticSearch IP/host information.
+   2. Create the Index in Elastic Search. See the script ./createIndex.sh and replace it with your ElasticSearch IP/host information.
 
    $ ./createIndex.sh
 
 
-3. Build and publish the Spring Cloud Stream ElasticSearch sink app. 
+   3. Build and publish the Spring Cloud Stream ElasticSearch sink app. 
 
    $ cd Elasticsearch-sink/
+   
+   
+   _TODO: Make the ElasticSearch cluster IP a parameter for this app. At this moment, it's hard-coded within the app_
+   
+   ---
+   Edit the file _src/main/java/io/pivotal/example/stream/elasticsearch/sink/ElasticsearchSinkProperties.java_ and replace the entry _es-kibana.pcf-demo.net:9200_ with your ElasticSearch/Kibana IP address or hostname from step #1 above.
+   
+   This step is temporary, until somebody can make that a param for the app (to be passed during the pipeline creation process)
+   
+   ---
+   
    $ ./mvnw package
 ```
 (...)
@@ -103,12 +114,12 @@ It also requires a docker registry account, with the ability to push and pull im
    Note down the external IP address of _maven-svc_. We'll use that on steps #5 and #6 below.
 
 
-4. Start the Spring Cloud Dataflow (SCDF) server locally or deploy it to PCF
+   4. Start the Spring Cloud Dataflow (SCDF) server locally or deploy it to PCF
 
    Follow the documentation at https://docs.spring.io/spring-cloud-dataflow-server-cloudfoundry/docs/1.3.0.M2/reference/htmlsingle/#getting-started
 
 
-5. Import the apps we'll use into SCDF
+   5. Import the apps we'll use into SCDF
 
    Use the UI or command line to: 
 
@@ -119,7 +130,7 @@ It also requires a docker registry account, with the ability to push and pull im
    Replace <version> of the jar file with the correct filename(refer to step #3). You can also find the file at Elasticsearch-sink/target/. Replace [HOST] with the httpd host from step #3.
 
 
-6. Create and deploy the SCDF pipeline, importing data into Elastic Search
+   6. Create and deploy the SCDF pipeline, importing data into Elastic Search
 
    Use the UI or SCDF command line to deploy the following pipeline to SCDF:
 
@@ -130,7 +141,7 @@ It also requires a docker registry account, with the ability to push and pull im
    Replace [HOST] above with your httpd host from step #3.
 
 
-7. Check data is being ingested into ElasticSearch
+   7. Check data is being ingested into ElasticSearch
 
    You can check the SCDF app logs and verify the number of records directly in Elastic Search:
 
@@ -142,7 +153,7 @@ It also requires a docker registry account, with the ability to push and pull im
    {"count":2,"_shards":{"total":1,"successful":1,"failed":0}}
 ```
 
-8. Open the Kibana UI and import the dashboard
+   8. Open the Kibana UI and import the dashboard
 
    * Open the Kibana UI at http://[Elastic-Kibana-IP]:5601/
 
