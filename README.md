@@ -56,7 +56,7 @@ It also requires a docker registry account, with the ability to push and pull im
    $ cd Elasticsearch-sink/
    
    
-   _TODO: Make the ElasticSearch cluster IP a parameter for this app. At this moment, it's hard-coded within the app_
+   _TODO: Make the ElasticSearch cluster IP a parameter for this app. At this moment, it's hard-coded within the app as es-kibana.pcf-demo.net _
    
    ---
    Edit the file _src/main/java/io/pivotal/example/stream/elasticsearch/sink/ElasticsearchSinkProperties.java_ and replace the entry _es-kibana.pcf-demo.net:9200_ with your ElasticSearch/Kibana IP address or hostname from step #1 above.
